@@ -7,11 +7,28 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Connect to MongoDB
+// Connect to MongoDB with better error handling
 mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log(err));
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("MongoDB Connected Successfully"))
+  .catch((err) => {
+    console.log("MongoDB Connection Error:", err.message);
+    process.exit(1);
+  });
+
+// Health check with DB status
+app.get("/health", (req, res) => {
+  const dbStatus =
+    mongoose.connection.readyState === 1 ? "Connected" : "Disconnected";
+  res.json({
+    status: "OK",
+    database: dbStatus,
+    timestamp: new Date().toISOString(),
+  });
+});
 
 // Routes
 app.use("/api/notes", require("./routes/notes"));
