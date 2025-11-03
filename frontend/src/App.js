@@ -28,15 +28,21 @@ function App() {
     if (!title.trim() || !content.trim()) return;
 
     try {
-      await axios.post(`${API_URL}/api/notes`, {
+      console.log("Sending note data:", { title, content });
+      const response = await axios.post(`${API_URL}/api/notes`, {
         title,
         content,
       });
+      console.log("Note added successfully:", response.data);
       setTitle("");
       setContent("");
       fetchNotes();
     } catch (error) {
-      console.log("Error adding note");
+      console.log("Error adding note:", {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message,
+      });
     }
   };
 
