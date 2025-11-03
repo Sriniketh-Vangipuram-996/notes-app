@@ -6,7 +6,10 @@ require("dotenv").config();
 const app = express();
 app.use(
   cors({
-    origin: ["https://notes-frontend.onrender.com", "http://localhost:3000"],
+    origin: [
+      "https://notes-frontend-co0q.onrender.com",
+      "http://localhost:3000",
+    ],
     credentials: true,
   })
 );
