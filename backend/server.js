@@ -4,7 +4,12 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: ["https://notes-frontend.onrender.com", "http://localhost:3000"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Connect to MongoDB with better error handling
